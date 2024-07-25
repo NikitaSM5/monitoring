@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ActiveUsersWidget</class>
+ <widget class="QWidget" name="ActiveUsersWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>706</width>
+    <height>314</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTreeWidget" name="treeClients">
+     <property name="indentation">
+      <number>0</number>
+     </property>
+     <property name="headerHidden">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>domain</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>machine</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ip</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>user</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>last active time</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
