@@ -21,6 +21,7 @@ private:
 public slots:
     void incomingConnection(qintptr socket_descriptor);
     void slotReadyRead();
+    void removeUser(qintptr socket_descriptor);
 };
 
 #endif // SERVER_H

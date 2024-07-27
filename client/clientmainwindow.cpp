@@ -15,6 +15,9 @@ ClientMainWindow::ClientMainWindow(QWidget *parent) :
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
     connect(&timer, SIGNAL(timeout()), this, SLOT(on_timer()));
     timer.start(2000);
+
+    while (!socket->isOpen())
+        socket->connectToHost("127.0.0.1", 2323);
 }
 
 ClientMainWindow::~ClientMainWindow()
@@ -45,6 +48,7 @@ void ClientMainWindow::slotReadyRead()
 
         QByteArray screenshotData;
         QBuffer buffer(&screenshotData);
+        buffer.open(QIODevice::WriteOnly);
         pixmap.save(&buffer, "PNG");
 
         data.clear();
@@ -52,12 +56,8 @@ void ClientMainWindow::slotReadyRead()
         out.setVersion(QDataStream::Qt_5_15);
         out << QString("screenshot") << screenshotData;
         socket->write(data);
+        socket->flush();
     }
-}
-
-void ClientMainWindow::on_btConnect_clicked()
-{
-    socket->connectToHost("127.0.0.1", 2323);
 }
 
 void ClientMainWindow::on_timer()

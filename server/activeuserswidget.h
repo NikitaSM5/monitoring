@@ -25,6 +25,7 @@ public:
     explicit ActiveUsersWidget(QWidget *parent = nullptr);
     ~ActiveUsersWidget();
     void addNewUser(User usr);
+    void removeUser(qintptr socket_descriptor);
 
 private slots:
     void on_treeClients_itemDoubleClicked(QTreeWidgetItem *item, int column);

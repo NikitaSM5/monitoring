@@ -1,5 +1,6 @@
 #include "server.h"
 #include <QDataStream>
+#include <QFile>
 #include "globaldata.h"
 #include <structs.h>
 
@@ -29,8 +30,15 @@ void Server::incomingConnection(qintptr socket_descriptor)
 {
     socket = new QTcpSocket;
     socket->setSocketDescriptor(socket_descriptor);
+
     connect(socket, &QTcpSocket::readyRead, this, &Server::slotReadyRead);
-    connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
+    connect(socket, &QTcpSocket::disconnected, this, [this, socket_descriptor]() {
+        GLOBAL->active_users->removeUser(socket_descriptor);
+        qDebug() << "disconected " << socket_descriptor;
+        sockets.removeOne(socket);
+        socket->deleteLater();
+    });
+
     sockets.push_back(socket);
     qDebug() << "connected " << socket_descriptor;
 }
@@ -53,9 +61,22 @@ void Server::slotReadyRead()
         if (str == "screenshot") {
             QByteArray data;
             in >> data;
-            qDebug() << "Screenshot saved";
+            QFile file(QString::number(socket->socketDescriptor()) + "_"
+                       + QDateTime::currentDateTime().toString("yyyy_MM_dd_hh-mm") + ".png");
+            if (file.open(QIODevice::WriteOnly)) {
+                file.write(data);
+                file.close();
+                qDebug() << "Screenshot saved";
+            }
         }
 
     } else
         qDebug() << "Unable to read";
+}
+
+void Server::removeUser(qintptr socket_descriptor)
+{
+    for (int i = 0; i < sockets.length(); i++)
+        if (sockets.at(i)->socketDescriptor() == socket_descriptor)
+            sockets.remove(i);
 }

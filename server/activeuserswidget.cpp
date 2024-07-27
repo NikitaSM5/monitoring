@@ -40,6 +40,13 @@ void ActiveUsersWidget::addNewUser(User usr)
         ui->treeClients->resizeColumnToContents(i);
 }
 
+void ActiveUsersWidget::removeUser(qintptr socket_descriptor)
+{
+    for (int i = 0; i < ui->treeClients->topLevelItemCount(); i++)
+        if (ui->treeClients->topLevelItem(i)->text(tcDomain).toInt() == socket_descriptor)
+            ui->treeClients->takeTopLevelItem(i);
+}
+
 void ActiveUsersWidget::on_treeClients_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     GLOBAL->server.sendToClient("screenshot", item->text(tcDomain).toInt());

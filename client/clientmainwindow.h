@@ -29,7 +29,6 @@ public slots:
     void slotReadyRead();
 
 private slots:
-    void on_btConnect_clicked();
     void on_timer();
 };
 
